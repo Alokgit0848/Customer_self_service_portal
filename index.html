@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insurance Customer Self-Service Portal</title>
+    <script defer src="script.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="flex flex-col min-h-screen">
+    
+    <!-- Navbar -->
+    <nav class="w-full h-20 flex items-center justify-between bg-gray-400 px-6">
+        <!-- Brand -->
+        <div id="brand">
+            <a href="index.html" class="text-2xl md:text-3xl font-bold text-white hover:text-black transition duration-300">Investopedia</a>
+        </div>
+
+        <!-- Menu (Desktop) -->
+        <ul class="hidden md:flex space-x-6">
+            <li>
+                <button class="menu-btn text-white hover:text-black transition duration-300 font-bold" data-section="claim-form">File a Claim</button>
+            </li>
+            <li>
+                <button class="menu-btn text-white hover:text-black transition duration-300 font-bold" data-section="track-claims">Track Claims</button>
+            </li>
+            <li>
+                <button class="menu-btn text-white hover:text-black transition duration-300 font-bold" data-section="chatbot">Chatbot</button>
+            </li>
+            <li>
+                <button class="menu-btn text-white hover:text-black transition duration-300 font-bold" data-section="knowledge-base">Search Knowledge Base</button>
+            </li>
+        </ul>
+
+        <!-- Mobile Menu Button -->
+        <div class="md:hidden">
+            <button id="mobile-menu-button" class="text-white focus:outline-none" aria-label="Toggle menu" aria-expanded="false">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu Dropdown -->
+    <div id="mobile-menu" class="hidden md:hidden bg-gray-700">
+        <ul class="flex flex-col space-y-4 p-4">
+            <li>
+                <button class="mobile-menu-btn text-white hover:text-black transition duration-300 font-bold" data-section="claim-form">File a Claim</button>
+            </li>
+            <li>
+                <button class="mobile-menu-btn text-white hover:text-black transition duration-300 font-bold" data-section="track-claims">Track Claims</button>
+            </li>
+            <li>
+                <button class="mobile-menu-btn text-white hover:text-black transition duration-300 font-bold" data-section="chatbot">Chatbot</button>
+            </li>
+            <li>
+                <button class="mobile-menu-btn text-white hover:text-black transition duration-300 font-bold" data-section="knowledge-base">Search Knowledge Base</button>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <main class="flex-grow container mx-auto mt-8 px-4">
+        <!-- Landing Section: Image and Tips -->
+        <div id="landing-section">
+            <div class="mb-8 ">
+                <img src="https://www.investopedia.com/thmb/h4Ppqh8hxLN5CejXa1JqnIGH4KI=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/insurance_claim.asp-final-ad2bc2c60d5c46e999bf064a90ff2dc6.png" alt="Insurance Claim" class="w-full h-auto rounded shadow">
+            </div>
+            <div class="bg-gray-100 p-6 rounded-md shadow-xl">
+                <h2 class="text-xl font-bold mb-4">Insurance Claim Tips</h2>
+                <ul class="list-disc pl-5 space-y-2">
+                    <li>Keep all relevant documents handy.</li>
+                    <li>Report the incident as soon as possible.</li>
+                    <li>Provide accurate information to avoid delays.</li>
+                    <li>Follow up regularly on your claim status.</li>
+                    <li>Understand your policy coverage.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Claim Submission Form (Initially Hidden) -->
+        <div id="claim-form" class="hidden mt-8">
+            <h2 class="text-xl font-bold mb-4">Submit a New Insurance Claim</h2>
+            <form class="bg-white p-6 rounded shadow-md">
+                <div class="mb-4">
+                    <label class="block text-gray-700">Policy Number</label>
+                    <input id="policy-number" type="number" class="w-full border border-gray-300 p-2 rounded" required>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700">Incident Date</label>
+                    <input id="incident-date" type="date" class="w-full border border-gray-300 p-2 rounded" required>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700">Incident Description</label>
+                    <textarea id="incident-description" class="w-full border border-gray-300 p-2 rounded" required></textarea>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700">Attach Files</label>
+                    <input id="file-upload" type="file" class="w-full border border-gray-300 p-2 rounded">
+                </div>
+                <button id="submit-claim-btn" type="button" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">Submit Claim</button>
+                <div id="success-message" class="text-green-500 mt-4 hidden">Claim submitted successfully!</div>
+            </form>
+        </div>
+
+        <!-- Claim Tracking (Initially Hidden) -->
+        <div id="track-claims" class="hidden mt-8">
+            <h2 class="text-xl text-center font-bold mb-10 mt-5">Track Your Claims</h2>
+            <div class="overflow-x-auto">
+                <table class="min-w-full bg-white rounded shadow-xl">
+                    <thead>
+                        <tr>
+                            <th class="py-5 px-6 border-b">Claim Number</th>
+                            <th class="py-5 px-6 border-b">Status</th>
+                            <th class="py-5 px-6 border-b">Date Submitted</th>
+                        </tr>
+                    </thead>
+                    <tbody id="claims-list">
+                        <!-- Dynamic claims data will be injected here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Chatbot Integration (Initially Hidden) -->
+        <div id="chatbot" class="hidden mt-8">
+            <h2 class="text-xl font-bold mb-4">Chat with Us (AI-Powered Chatbot)</h2>
+            <iframe
+                src="https://console.dialogflow.com/api-client/demo/embedded/4ba6bd09-bcd1-4b5a-b0a0-5d0afef4b928"
+                class="w-full h-80 border-0 rounded"
+                allow="microphone">
+            </iframe>
+        </div>
+
+        <!-- Knowledge Base Search (Initially Hidden) -->
+        <div id="knowledge-base" class="hidden mt-8">
+            <h2 class="text-xl font-bold mb-4">Search Knowledge Base</h2>
+            <input id="search-bar" type="text" class="w-full border border-gray-300 p-2 rounded" placeholder="Search FAQs">
+            <div id="search-results" class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Dynamic search results will be injected here -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white text-center p-4">
+        <p>&copy; 2024 Insurance Customer Self-Service Portal</p>
+    </footer>
+
+</body>
+</html>
